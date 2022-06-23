@@ -1,0 +1,111 @@
+<html>
+  <script src="jquery-3.5.1.min.js"></script>
+  <script>
+    //our scrip will come here
+
+    $(document).ready(function () {
+      console.log("no more sins");
+
+      $("#bookid").blur(() => {
+        let input = $("#bookid").val();
+        console.log("blur working");
+        let params = {
+          data: { id: input },
+          url: "http://localhost:8081/getDetails",
+          type: "get",
+          Datatype: "json",
+          success: (data) => {
+            if (data.status) {
+              $("#bname").val(data.detail.bookname);
+              $("#price").val(data.detail.price);
+              $("#msg").text("BookId Found");
+            } else {
+              $("#bname").val("");
+              $("#price").val("");
+              $("#msg").text("BookId Not Found");
+            }
+          },
+          error: (err) => {},
+        };
+
+        $.ajax(params);
+      });
+
+      $("#update").click(() => {
+        console.log("Click event Working");
+
+        let input = {
+          id: $("#bookid").val(),
+          bname: $("#bname").val(),
+          price: $("#price").val(),
+        };
+
+        let para = {
+          data: input,
+          url: "http://localhost:8081/update",
+          type: "get",
+          Datatype: "json",
+          success: (data) => {
+            if (data) {
+              console.log("Update Succesful");
+              $("#bookid").val("");
+
+              $("#bname").val("");
+              $("#price").val("");
+
+              $("#msg").text("Updated Successfully");
+            } else {
+              $("#bookid").val("");
+              $("#bname").val("");
+              $("#price").val("");
+              $("#msg").text("Cannot update Data");
+            }
+          },
+          error: (err) => {
+            console.log("Error occured " + err);
+          },
+        };
+
+        $.ajax(para);
+      });
+
+      //   $("#b2").click(function () {
+      //     //console.log("jquery works");
+      //     alert("jquery works");
+      //   });
+    });
+  </script>
+
+  <body>
+    <span>Book Id </span
+    ><input type="text" id="bookid" placeholder="Book Id" /><span id="msg">
+      What Happened</span
+    >
+    <br /><br />
+    <span> Name </span><input type="text" id="bname" placeholder="Book Name" />
+    <br /><br />
+    <span>Price </span><input type="text" id="price" placeholder="Price" />
+    <br /><br />
+    <button id="update">Update</button>
+
+    <!-- <form action="getDetails" method="get">
+	 <span>Book Id </span
+    ><input type="text" id="bookid" placeholder="Book Id" /><span id="msg">
+      What Happened</span
+    >
+    <br /><br />
+    <span> Name </span><input type="text" id="bname" placeholder="Book Name" />
+    <br /><br />
+    <span>Price </span><input type="text" id="price" placeholder="Price" />
+    <br /><br />
+    
+	</form>
+	
+	
+	<form action="update" method="get">
+	 <button id="update">Update</button>
+	</form>
+	
+	
+  </body>
+</html>
